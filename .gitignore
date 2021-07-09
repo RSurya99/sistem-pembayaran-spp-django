@@ -23,10 +23,7 @@ venv
 package-lock.json
 
 core/media/*
-core/static/assets/css/*
-core/static/assets/scss/*
-core/static/assets/js/*
-!core/static/assets/js/script.js
+core/static/assets/js/plugins/*
 
 !core/media/.gitkeep
 staticfiles/*
