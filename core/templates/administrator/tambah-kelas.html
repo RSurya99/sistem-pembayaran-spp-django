@@ -1,0 +1,66 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Icons {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+      <div class="row">
+        <div class="col">
+            <div class="card bg-secondary shadow border-0">
+                <div class="card-body px-lg-5 py-lg-5">
+                  <div class="text-center text-muted mb-4">
+                    <h1>Tambah Kelas</h1>
+                  </div>
+
+                  <form method="POST" id="tambah-spp-form">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="nama_kelas">Kelas</label>
+                        <div class="input-group input-group-alternative mb-3">
+                            {{ form.nama_kelas }}
+                        </div>
+                    </div>
+                    <span class="text-error">{{ form.nama_kelas.errors }}</span>
+
+                    <div class="form-group">
+                        <label for="kompetensi_keahlian">Kompetensi Keahlian</label>
+                        <div class="input-group input-group-alternative mb-3">
+                            {{ form.kompetensi_keahlian }}
+                        </div>
+                    </div>
+                    <span class="text-error">{{ form.kompetensi_keahlian.errors }}</span>
+                    
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary mt-4">Tambah Kelas</button>
+                    </div>
+                  </form> 
+      
+                </div>
+            </div>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+    
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

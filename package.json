@@ -1,0 +1,21 @@
+{
+    "name": "aplikasi-spp-rsurya99",
+    "mastertemplate": "boilerplate-code-django-dashboard",
+    "version": "1.0",
+    "description": "Aplikasi berbasis web untuk pembayaran spp.",
+    "scripts": {},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/RSurya99/aplikasi-spp"
+    },
+    "bugs": {
+        "url": "https://github.com/RSurya99/aplikasi-spp/issues",
+        "email": "rafliazz679@gmail.com"
+    },
+    "author": "RSurya99",
+    "engines": {
+        "node": ">=10.0.0"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+}

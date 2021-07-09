@@ -1,0 +1,246 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Data User  {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+  .search-button{
+    z-index: 0;
+  }
+  .align-col{
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+          
+      {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <span class="alert-inner--text"><strong>{{ message }}</strong></span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+        {% else %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span class="alert-inner--text"><strong>{{ message }}</strong></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Table -->
+      <div class="row">
+        <div class="col-xl-6">
+          <div class="card shadow">
+            <div class="card-header border-0 align-col">
+              <h3 class="mb-0">Tabel Spp</h3>
+              <a href="{% url 'tambah-spp' %}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> tambah data</a>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Tahun</th>
+                    <th scope="col">Nominal</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for spp in spps %}
+                    <tr>
+                        <td scope="row">
+                            {{ spp.tahun }}
+                        </td>
+                        <td>
+                            {{ spp.nominal }}
+                        </td>
+                        <td class="text-right">
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-sm btn-icon-only text-muted btn-secondary" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a href="{% url 'ubah-spp' spp.id %}" class="dropdown-item">Edit Spp</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                  {% if spps.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ spps.previous_page_number }}" tabindex="-1">
+                        <i class="fas fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% endif %}
+                  
+                  {% for i in spps.paginator.page_range %}
+                    {% if i == spps.number %}
+                      <li class="page-item active">
+                        <a class="page-link" href="#">{{ i }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if spps.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ spps.next_page_number }}">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% endif %}
+
+                </ul>
+              </nav>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-xl-6">
+          <div class="card shadow">
+            <div class="card-header border-0 align-col">
+              <h3 class="mb-0">Tabel Metode Pembayaran</h3>
+              <a href="{% url 'tambah-mp' %}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> tambah data</a>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Metode</th>
+                    <th scope="col">Keterangan</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for mp in mps %}
+                    <tr>
+                        <td scope="row">
+                            {{ mp.metode }}
+                        </td>
+                        <td>
+                            {{ mp.keterangan }}
+                        </td>
+                        <td class="text-right">
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-sm btn-icon-only text-muted btn-secondary" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a href="{% url 'ubah-mp' mp.id %}" class="dropdown-item">Edit Metode Pembayaran</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                  {% if mps.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page-mp={{ mps.previous_page_number }}" tabindex="-1">
+                        <i class="fas fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% endif %}
+                  
+                  {% for i in mps.paginator.page_range %}
+                    {% if i == mps.number %}
+                      <li class="page-item active">
+                        <a class="page-link" href="#">{{ i }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item"><a class="page-link" href="?page-mp={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if mps.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page-mp={{ mps.next_page_number }}">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% endif %}
+
+                </ul>
+              </nav>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

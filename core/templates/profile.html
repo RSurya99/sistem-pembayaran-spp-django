@@ -1,0 +1,156 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Profile {% endblock title %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" 
+         style="min-height: 600px; background-image: url(/static/assets/img/theme/profile-cover-cs.jpg); background-size: cover; background-position: center top;">
+      <!-- Mask -->
+      <span class="mask bg-gradient-default opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-7 col-md-10">
+            <h1 class="display-2 text-white">Hello {{ request.user.nama }}</h1>
+            <p class="text-white mt-0 mb-5">Ini adalah halaman profil kamu. Kamu bisa mengedit data pribadimu atau mengganti foto profilmu disini.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+
+      <div class="row">
+        <div class="col-xl-4 order-xl-2 mb-5 mb-xl-0">
+          <div class="card card-profile shadow">
+            <div class="row justify-content-center">
+              <div class="col-lg-3 order-lg-2">
+                <div class="card-profile-image">
+                    <img src="{{ request.user.profile_img.url }}" class="rounded-circle">
+                </div>
+              </div>
+            </div>
+            <div class="card-body pt-0 pt-md-4">
+              <div class="text-center mt-md-8 mt-8">
+                <h3>
+                  {{ request.user.nama }}
+                </h3>
+                {% if request.user.is_superuser %}
+                  <div class="h5 mt-4">
+                    <i class="ni business_briefcase-24 mr-2"></i>ADMINISTRATOR
+                  </div>
+                {% elif request.user.is_staff %}
+                  <div class="h5 mt-4">
+                    <i class="ni business_briefcase-24 mr-2"></i>STAFF PETUGAS
+                  </div>
+                {% else %}
+                  <div class="h5 mt-4">
+                    <i class="ni business_briefcase-24 mr-2"></i>{{ request.user.siswa.id_kelas }}
+                  </div>
+                {% endif %}
+                <div>
+                  <i class="ni education_hat mr-2"></i>SMK CIPTA SKILL Bandung
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-8 order-xl-1">
+          <div class="card bg-secondary shadow">
+            <div class="card-header bg-white border-0">
+              <div class="row align-items-center">
+                <div class="col-8">
+                  <h3 class="mb-0">My account</h3>
+                </div>
+                <div class="col-4 text-right">
+                  <button class="btn btn-sm btn-primary" onclick="editData()">Edit Data</button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              {% for message in messages %}
+                {% if message %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <span class="alert-inner--text"><strong>{{ message }}</strong></span>
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                {% endif %}
+              {% endfor %}
+              <form action="{% url 'profile' request.user.id %}" method="POST" id="profile-form" class="toggleInputs" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Profile Picture -->
+                <h6 class="heading-small text-muted mb-4">Profile Picture</h6>
+                <div class="pl-lg-4">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-prepend mr-4">
+                        <img src="{{ request.user.profile_img.url }}" class="rounded-circle" width="75" alt="">
+                        <input type="file" name="profile_img" id="id_profile_img" class="form-control-file mt-4 ml-4">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <hr class="my-4" />
+
+                <!-- User Information -->
+                <h6 class="heading-small text-muted mb-4">User information</h6>
+                <div class="pl-lg-4">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-username">Username</label>
+                        <input type="text" id="input-username" name="username" id="id_username" class="form-control form-control-alternative" placeholder="Username" 
+                               value="{{ request.user.username }}">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-nama">Nama</label>
+                        <input type="text" id="input-email" name="nama" id="id_nama" class="form-control form-control-alternative" 
+                               value="{{ request.user.nama }}">
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-email">Email</label>
+                        <input type="text" id="input-email" name="email" id="id_email" class="form-control form-control-alternative" 
+                               value="{{ request.user.email }}">
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <button type="submit" class="btn btn-primary mt-2">Edit Profile</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+<script>
+  var x = document.getElementsByTagName("input");
+  for (let item of x) {
+    item.readOnly = true;
+  }
+
+  function editData(){
+    var x = document.getElementsByTagName("input");
+    for (let item of x) {
+      item.readOnly = false;
+    }
+  }
+</script>
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

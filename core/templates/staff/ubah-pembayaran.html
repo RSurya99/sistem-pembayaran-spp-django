@@ -1,0 +1,120 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Icons {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+      <div class="row">
+        <div class="col">
+            <div class="card bg-secondary shadow border-0">
+                <div class="card-body px-lg-5 py-lg-5">
+                  <div class="text-center text-muted mb-4">
+                    <h1>Ubah Pembayaran Staff</h1>
+                  </div>
+                  <div class="text-center text-muted mb-4">
+    
+                    {% for message in messages %}
+                      {% if message %}
+                        <h1 class="text-light">{{ message }}</h1>
+                      {% endif %}
+                    {% endfor %}
+                  
+                  </div>
+
+                  <form action="{% url 'ubah-pembayaran' pembayaran.id %}" method="POST" enctype="multipart/form-data" id="ubah-pembayaran-form">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="nama_petugas">Nama Petugas</label>
+                        <div class="input-group input-group-alternative mb-3">
+                          <input type="text" name="nama_petugas" value="{{ request.user.nama }}" class="form-control" required="" id="id_nama_petugas" readonly>
+                        </div>
+                    </div>
+                    <span class="text-error">{{ form.nama_petugas.errors }}</span>
+
+                    <div class="form-group">
+                        <label for="siswa">Nama</label>
+                        <div class="input-group input-group-alternative mb-3">
+                          <input type="text" name="siswa" value="{{ form.siswa.value }}" class="form-control" required="" id="id_siswa" readonly>
+                        </div>
+                    </div>
+                    <span class="text-error">{{ form.id_siswa.errors }}</span>
+
+                    <div class="form-group">
+                        <label for="id_spp">Pilih SPP</label>
+                        <div class="input-group input-group-alternative mb-3">
+                            {{ form.id_spp }}
+                        </div>
+                    </div>
+                    <span class="text-error">{{ form.id_spp.errors }}</span>
+
+                    <div class="form-group">
+                        <label for="id_jumlah_bayar">Jumlah Bayar</label>
+                        <div class="input-group input-group-alternative mb-3">
+                            {{ form.jumlah_bayar }}
+                        </div>
+                    </div>
+                    <span class="text-error">{{ form.jumlah_bayar.errors }}</span>
+                    
+                    <div class="form-group">
+                        <label for="id_metode_pembayaran">Metode Pembayaran</label>
+                        <div class="input-group input-group-alternative mb-3">
+                            {{ form.metode_pembayaran }}
+                        </div>
+                    </div>
+                    <span class="text-error">{{ form.metode_pembayaran.errors }}</span>
+
+                    <div class="form-group">
+                        <label for="id_bukti_pembayaran">Bukti Pembayaran</label>
+                        <p>Currently : <img src="{{ pembayaran.bukti_pembayaran.url }}" width="75"></p>
+                        <input type="file" name="bukti_pembayaran" class="form-control-file" id="id_bukti_pembayaran">
+                    </div>
+                    <span class="text-error">{{ form.bukti_pembayaran.errors }}</span>
+
+                    <div class="form-group">
+                        <label for="id_status_pembayaran">Status Pembayaran</label>
+                        <div class="input-group input-group-alternative mb-3">
+                            {{ form.status_pembayaran }}
+                        </div>
+                    </div>
+                    <span class="text-error">{{ form.status_pembayaran.errors }}</span>
+
+                    <div class="form-group">
+                        <label for="id_keterangan">Keterangan</label>
+                        {{ form.keterangan }}
+                    </div>
+                    <span class="text-error">{{ form.keterangan.errors }}</span>
+                    
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary mt-4">Ubah Pembayaran</button>
+                    </div>
+                  </form> 
+      
+                </div>
+            </div>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+    
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

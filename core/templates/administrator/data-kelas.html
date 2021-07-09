@@ -1,0 +1,209 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Data User  {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+  .search-button{
+    z-index: 0;
+  }
+  .align-col{
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+          
+      {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <span class="alert-inner--text"><strong>{{ message }}</strong></span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+        {% else %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span class="alert-inner--text"><strong>{{ message }}</strong></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Table -->
+      <div class="row">
+        <div class="col-xl-3">
+          <div class="card shadow mb-2">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col align-col">
+                  <h3 class="mb-0">Filter</h3>
+                  <a href="{% url 'data-kelas' %}"><i class="fas fa-filter"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-items-left">
+                  <tbody>
+                    <tr>
+                      <td class="d-flex justify-content-between align-items-center">
+                        <a href="?filter_kelas=X">Kelas X</a> <span class="badge badge-primary badge-pill">{{ count_kelas_x }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="d-flex justify-content-between align-items-center">
+                        <a href="?filter_kelas=XI">Kelas XI</a> <span class="badge badge-primary badge-pill">{{ count_kelas_xi }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="d-flex justify-content-between align-items-center">
+                        <a href="?filter_kelas=XII">Kelas XII</a> <span class="badge badge-primary badge-pill">{{ count_kelas_xii }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-9">
+          <div class="card shadow">
+            <div class="card-header border-0 align-col">
+              <h3 class="mb-0">Tabel Kelas</h3>
+              <a href="{% url 'tambah-kelas' %}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> tambah data</a>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Kelas</th>
+                    <th scope="col">Kompetensi Keahlian</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for kelas in kelass %}
+                    <tr>
+                        <td scope="row">
+                            {{ kelas.nama_kelas }}
+                        </td>
+                        <td>
+                            {{ kelas.kompetensi_keahlian }}
+                        </td>
+                        <td class="text-right">
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-sm btn-icon-only text-muted btn-secondary" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <button type="button" data-toggle="modal" data-target="#hapus-{{ kelas.id }}" class="dropdown-item">Hapus Kelas</button>
+                                    <a href="{% url 'ubah-kelas' kelas.id %}" class="dropdown-item">Edit Kelas</a>
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Modal Hapus User -->
+                        <div class="modal fade" id="hapus-{{ kelas.id }}" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="userModalLabel">Hapus Kelas</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Apakah anda yakin ingin hapus kelas {{ kelas.nama_kelas }}-{{ kelas.kompetensi_keahlian }}?</strong></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                    <a href="{% url 'hapus-kelas' kelas.id %}" class="btn btn-primary">Ya</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                    </tr>
+                    
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                  {% if kelass.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ kelass.previous_page_number }}" tabindex="-1">
+                        <i class="fas fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% endif %}
+                  
+                  {% for i in kelass.paginator.page_range %}
+                    {% if i == kelass.number %}
+                      <li class="page-item active">
+                        <a class="page-link" href="#">{{ i }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if kelass.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ kelass.next_page_number }}">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% endif %}
+
+                </ul>
+              </nav>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,225 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Riwayat Pembayaran {% endblock title %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt--7">
+          
+      {% for message in messages %}
+          {% if message %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <span class="alert-inner--text"><strong>{{ message }}</strong></span>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">Riwayat Pembayaran</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Bukti Pembayaran</th>
+                    <th scope="col">Nama Siswa</th>
+                    <th scope="col">SPP</th>
+                    <th scope="col">Jumlah Bayar</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% if pembayarans %}
+                  {% for pembayaran in pembayarans %}
+                    <tr>
+                      <td scope="row">
+                        {{ pembayaran.tgl_bayar }}
+                      </td>
+                      <td>
+                          {% if pembayaran.bukti_pembayaran %}
+                              <img src="{{ pembayaran.bukti_pembayaran.url }}" alt="" width="75">
+                          {% endif %}
+                      </td>
+                      <td>
+                          {{ pembayaran.siswa }}
+                      </td>
+                      <td>
+                        {{ pembayaran.id_spp }}
+                      </td>
+                      <td>
+                        {{ pembayaran.jumlah_bayar }} Bulan
+                      </td>
+                      <td>
+                        {% if pembayaran.status_pembayaran == 'pending' %}
+                          <span class="badge badge-dot mr-4">
+                            <i class="bg-warning"></i> {{ pembayaran.status_pembayaran }}
+                          </span>
+                        {% elif pembayaran.status_pembayaran == 'success' %}
+                          <span class="badge badge-dot mr-4">
+                            <i class="bg-success"></i> {{ pembayaran.status_pembayaran }}
+                          </span>
+                        {% else %}
+                          <span class="badge badge-dot mr-4">
+                            <i class="bg-danger"></i> {{ pembayaran.status_pembayaran }}
+                          </span>
+                        {% endif %}
+                      </td>
+                      <td class="text-right">
+                        <div class="dropdown">
+                          <button type="button" class="btn btn-sm btn-icon-only text-muted btn-secondary" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <button type="button" data-toggle="modal" data-target="#lihat-{{ pembayaran.id }}" class="dropdown-item">Lihat Keterangan</button>
+                            {% if pembayaran.status_pembayaran == 'pending' %}
+                              <button type="button" data-toggle="modal" data-target="#hapus-{{ pembayaran.id }}" class="dropdown-item">Batalkan Pembayaran</button>
+                              <a class="dropdown-item" href="{% url 'ubah-pembayaran' pembayaran.id %}">Edit Pembayaran</a>
+                            {% elif pembayaran.status_pembayaran == 'rejected' %}
+                              <button type="button" data-toggle="modal" data-target="#hapus-{{ pembayaran.id }}" class="dropdown-item">Batalkan Pembayaran</button>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </td>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="lihat-{{ pembayaran.id }}" tabindex="-1" role="dialog" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="pembayaranModalLabel">Keterangan</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              {% if pembayaran.status_pembayaran == 'success' %}
+                              <p><strong>Pembayaran diterima oleh : {{ pembayaran.nama_petugas }}</strong></p>
+                              {% elif pembayaran.status_pembayaran == 'rejected' %}
+                              <p><strong>Pembayaran ditolak oleh : {{ pembayaran.nama_petugas }}</strong></p>
+                              {% endif %}
+                              <p><strong>Keterangan : {{ pembayaran.keterangan }}</strong></p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Modal -->
+                      <div class="modal fade" id="hapus-{{ pembayaran.id }}" tabindex="-1" role="dialog" aria-labelledby="pembayaranModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="pembayaranModalLabel">Batalkan Pembayaran</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p><strong>Apakah anda yakin akan membatalkan pembayaran ?</strong></p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                              <a href="{% url 'hapus-pembayaran' pembayaran.id %}" class="btn btn-primary">Ya</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </tr>
+                    
+                  {% endfor %}
+                {% else %}
+                <tr>
+                  <td colspan="7">
+                    <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+                      <span class="alert-inner--text"><strong>Anda belum melakukan pembayaran</strong></span>
+                    </div>
+                  </td>
+                </tr>
+                {% endif %}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                  {% if pembayarans.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ pembayarans.previous_page_number }}" tabindex="-1">
+                        <i class="fas fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  {% endif %}
+                  
+                  {% for i in pembayarans.paginator.page_range %}
+                    {% if i == pembayarans.number %}
+                      <li class="page-item active">
+                        <a class="page-link" href="#">{{ i }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if pembayarans.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ pembayarans.next_page_number }}">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                  {% endif %}
+
+                </ul>
+              </nav>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {% include "includes/footer.html" %}
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

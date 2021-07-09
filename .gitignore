@@ -1,0 +1,37 @@
+# byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# tests and coverage
+*.pytest_cache
+.coverage
+
+# database & logs
+*.db
+*.sqlite3
+*.log
+*.env
+
+# venv
+env
+venv
+
+# other
+.DS_Store
+
+# javascript
+package-lock.json
+
+core/media/*
+core/static/assets/css/*
+core/static/assets/scss/*
+core/static/assets/js/plugins/*
+core/static/assets/js/argon-dashboard.js
+core/static/assets/js/argon-dashboard.js.map
+core/static/assets/js/argon-dashboard.js.min.js
+core/static/assets/js/argon.min.js
+
+!core/media/.gitkeep
+staticfiles/*
+!staticfiles/.gitkeep 
+.vscode/symbols.json
