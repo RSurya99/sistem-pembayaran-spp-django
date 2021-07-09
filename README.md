@@ -1,4 +1,9 @@
-# Aplikasi Pembayaran SPP
- ![version](https://img.shields.io/badge/version-1.0-blue.svg)
+<h1 align="center">Aplikasi Pembayaran SPP </h1>
+<p align="center">sebuah aplikasi berbasis web yang saya buat untuk tugas ujikom saya, sebagai salah satu syarat kelulusan.</p>
 
-Aplikasi Pembayaran SPP adalah aplikasi yang saya buat untuk tugas Ujikom saya, sebagai salah satu syarat kelulusan. Aplikasi ini dapat digunakan untuk melakukan pembayaran SPP baik via online (Transfer bank) atau bayar langsung ke sekolah.
+<center>
+
+![Tampilan antarmuka Aplikasi](/staticfiles/interface.png)
+![version](https://img.shields.io/badge/version-1.0-blue.svg)
+
+</center>

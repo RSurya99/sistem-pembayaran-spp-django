@@ -25,13 +25,11 @@ package-lock.json
 core/media/*
 core/static/assets/css/*
 core/static/assets/scss/*
-core/static/assets/js/plugins/*
-core/static/assets/js/argon-dashboard.js
-core/static/assets/js/argon-dashboard.js.map
-core/static/assets/js/argon-dashboard.js.min.js
-core/static/assets/js/argon.min.js
+core/static/assets/js/*
+!core/static/assets/js/script.js
 
 !core/media/.gitkeep
 staticfiles/*
+!staticfiles/interface.png
 !staticfiles/.gitkeep 
 .vscode/symbols.json
