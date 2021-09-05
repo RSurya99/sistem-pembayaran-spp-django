@@ -22,7 +22,7 @@ virtualenv env
 ```bash
 pip3 install -r requirements.txt
 ```
-4. Run aplikasi (untuk membuat file sqlite) lalu migrate all
+4. Run aplikasi terlebih dahulu (untuk membuat file sqlite) lalu migrate all
 ```bash
 python manage.py runserver
 python manage.py makemigrations
