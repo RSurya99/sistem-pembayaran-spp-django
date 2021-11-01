@@ -1,4 +1,4 @@
-<h1 align="center">Aplikasi Pembayaran SPP </h1>
+<h1 align="center">Sistem Pembayaran SPP Berbasis Web </h1>
 <p align="center">sebuah aplikasi berbasis web yang saya buat untuk tugas ujikom dan sebagai salah satu syarat untuk kelulusan.</p>
 
 <center>
@@ -41,3 +41,13 @@ EMAILPASSWORD=YOUR_EMAIL_PASSWORD
 ```bash
 python manage.py runserver
 ```
+
+## Donasi
+
+Jika kamu telah menggunakan project ini dan itu berguna untuk kamu, mohon pertimbangkan untuk melakukan donasi:
+
+[Ko-fi](https://ko-fi.com/rsurya99) | [Trakteer](https://trakteer.id/rsurya99)
+
+## Lisence
+
+This project is under MIT license
